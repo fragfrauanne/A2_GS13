@@ -1,0 +1,132 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: white;
+    padding: 20px;
+}
+
+h1 {
+    color: #444;
+}
+
+#taskExplanation {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #666;
+}
+
+/* Standard (Desktop) */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px; /* Gleiche Lücken zwischen den Karten, vertikal & horizontal */
+    justify-items: center;
+    padding: 20px;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Handy */
+@media (max-width: 480px) {
+    .cards-container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+.card {
+    width: 190px;
+    height: 130px;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s ease;
+    transform-style: preserve-3d;
+    position: relative; /* Fixiert die Karte genau an ihrem Platz */
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box; /* Das sorgt dafür, dass Padding und Border in der festen Größe enthalten sind */
+    padding: 10px 10px 20px 10px; /* Oben, Rechts, Unten, Links – hier hast du z.B. mehr Platz unten */
+    font-weight: normal;
+    font-size: 18px;
+    text-align: center;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    backface-visibility: hidden;
+    background: linear-gradient(135deg, #ff9999, #ffcccc);
+    /* Roter Farbverlauf =  135deg, #ff9999, #ffcccc */
+    /* Grüner Farbverlauf =  135deg, #b3d285, #70b848 */
+    /* Violetter Farbverlauf =  135deg, #f3e5f5, #e1bee7 */
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    flex-direction: column;
+    gap: 5px;
+}
+
+.card-back p {
+    margin-bottom: 5px; /* Verkleinert den Abstand unter dem Antworttext */
+}
+
+.card-back div {
+    margin-top: 0; /* Stellt sicher, dass kein zusätzlicher Abstand oben bei den Buttons vorhanden ist */
+}
+
+button {
+    background: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    margin: 0 10px;
+    outline: none;
+}
+
+.fireworks {
+    display: none; /* Versteckt das Feuerwerk am Anfang */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    animation: appear 1s ease forwards;
+}
+
+.fireworks.show {
+    display: block; /* Jetzt wird es nur angezeigt, wenn die Klasse 'show' dazukommt */
+}
+
+footer {
+    font-size: 14px;
+    color: #666;
+    margin-top: 20px;
+}
