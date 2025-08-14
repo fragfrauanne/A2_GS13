@@ -1,7 +1,23 @@
+html,
+body {
+    /* styles to keep footer to the bottom */
+    height: 100%;
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     background: white;
+    padding: 20px;
+
+}
+
+.cards-container {
     padding: 20px;
 }
 
@@ -10,54 +26,119 @@ h1 {
 }
 
 #taskExplanation {
-    margin-bottom: 20px;
+    /* task explanation bottom margin */
+    margin-bottom: 0;
     font-size: 20px;
     color: #666;
 }
 
-/* Standard (Desktop) */
-.cards-container {
+
+/* Breakpoints */
+
+/* Default screen size */
+
+.cards-container.grid-mode {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 10px; /* Gleiche Lücken zwischen den Karten, vertikal & horizontal */
+    gap: 10px;
     justify-items: center;
     padding: 20px;
 }
 
-/* Tablet */
-@media (max-width: 768px) {
-    .cards-container {
-        grid-template-columns: repeat(3, 1fr);
+/* Large Tablets (≥1024px) */
+
+@media (max-width: 1024px) {
+    .cards-container.grid-mode {
+        grid-template-columns: repeat(4, 1fr);
+        padding: 10px 20px;
+
     }
 }
 
-/* Handy */
+/* Tablets (≥768px) */
+
+@media (max-width: 768px) {
+    .cards-container.grid-mode {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 10px 20px;
+
+    }
+}
+
+/* Mobile (≥480px) */
+
 @media (max-width: 480px) {
-    .cards-container {
-        grid-template-columns: repeat(1, 1fr);
+    .cards-container.grid-mode {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 10px 20px;
+
+    }
+}
+
+/* Small Mobile (<480px) */
+
+@media (max-width: 360px) {
+    .cards-container.grid-mode {
+        grid-template-columns: 1fr;
+        padding: 10px 20px;
+
+    }
+}
+
+/* landscape orientation */
+
+@media (orientation: landscape) {
+    .footer {
+        font-size: 14px;
     }
 }
 
 .card {
-    width: 190px;
+    width: 100%;
+    max-width: 190px;
     height: 130px;
     perspective: 1000px;
     cursor: pointer;
 }
+
+
+/* card checked animation */
+
+.card.fade-out {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    pointer-events: none;
+}
+
 
 .card-inner {
     width: 100%;
     height: 100%;
     transition: transform 0.6s ease;
     transform-style: preserve-3d;
-    position: relative; /* Fixiert die Karte genau an ihrem Platz */
+    position: relative;
+    /* Fixiert die Karte genau an ihrem Platz */
 }
 
 .card.flipped .card-inner {
     transform: rotateY(180deg);
 }
 
-.card-front, .card-back {
+
+/* styles for card text scrolling for Safari, Chrome, Opera*/
+.card-front::-webkit-scrollbar,
+.card-back::-webkit-scrollbar {
+    display: none;
+}
+
+.card-front,
+.card-back {
+    /* styles for card text scrolling */
+    /* IE and Edge fallback*/
+    -ms-overflow-style: none;
+    /* Firefox */
+    scrollbar-width: none;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -67,18 +148,25 @@ h1 {
     justify-content: center;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    box-sizing: border-box; /* Das sorgt dafür, dass Padding und Border in der festen Größe enthalten sind */
-    padding: 10px 10px 20px 10px; /* Oben, Rechts, Unten, Links – hier hast du z.B. mehr Platz unten */
+    /* box-sizing: border-box; */
+    /* Das sorgt dafür, dass Padding und Border in der festen Größe enthalten sind */
+    /* padding: 10px 10px 20px 10px; */
+    /* Oben, Rechts, Unten, Links – hier hast du z.B. mehr Platz unten */
     font-weight: normal;
-    font-size: 18px;
+    font-size: font-size: clamp(1rem, 1.5vw, 1.2rem);
     text-align: center;
     hyphens: auto;
+    padding: 1.4rem 1rem;
+    box-sizing: border-box;
     overflow-wrap: break-word;
+    overflow-y: auto;
+    word-break: break-word;
+    /* overflow-wrap: break-word; */
     backface-visibility: hidden;
-    background: linear-gradient(135deg, #ff9999, #ffcccc);
-    /* Roter Farbverlauf =  135deg, #ff9999, #ffcccc */
+    background: linear-gradient(135deg, #ffcccc, #ff9999);
+    /* Roter Farbverlauf =  135deg, #ffcccc, #ff9999 */
     /* Grüner Farbverlauf =  135deg, #b3d285, #70b848 */
-    /* Violetter Farbverlauf =  135deg, #f3e5f5, #e1bee7 */
+    /* Violetter Farbverlauf =  135deg, #e1bee7, #c4a8e0 */
 }
 
 .card-back {
@@ -88,11 +176,13 @@ h1 {
 }
 
 .card-back p {
-    margin-bottom: 5px; /* Verkleinert den Abstand unter dem Antworttext */
+    margin-bottom: 5px;
+    /* Verkleinert den Abstand unter dem Antworttext */
 }
 
 .card-back div {
-    margin-top: 0; /* Stellt sicher, dass kein zusätzlicher Abstand oben bei den Buttons vorhanden ist */
+    margin-top: 0;
+    /* Stellt sicher, dass kein zusätzlicher Abstand oben bei den Buttons vorhanden ist */
 }
 
 button {
@@ -106,7 +196,8 @@ button {
 }
 
 .fireworks {
-    display: none; /* Versteckt das Feuerwerk am Anfang */
+    display: none;
+    /* Versteckt das Feuerwerk am Anfang */
     position: fixed;
     top: 50%;
     left: 50%;
@@ -122,11 +213,64 @@ button {
 }
 
 .fireworks.show {
-    display: block; /* Jetzt wird es nur angezeigt, wenn die Klasse 'show' dazukommt */
+    display: block;
+    /* Jetzt wird es nur angezeigt, wenn die Klasse 'show' dazukommt */
 }
 
 footer {
     font-size: 14px;
     color: #666;
     margin-top: 20px;
+}
+
+
+/* toggle layout button styles */
+
+#toggleLayoutBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: #ff9999;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+#toggleLayoutBtn:hover {
+    background-color: #ffcccc;
+}
+
+/* layout switching modes */
+
+.cards-container.stack-mode {
+    position: relative;
+    height: 300px;
+    /* Adjust based on how many cards you want visible */
+    transition: all 0.6s ease;
+
+}
+
+.cards-container.stack-mode .card-back:first-child,
+.cards-container.stack-mode .card-front:first-child {
+    box-shadow: 0 0 5px rgb(224, 224, 224);
+}
+
+
+
+.cards-container.stack-mode .card {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 50px auto;
+    width: 300px;
+    height: 170px;
+    transform: translateY(var(--stack-offset));
+    z-index: var(--stack-index);
+    transition: transform 0.6s ease, opacity 0.6s ease;
 }
