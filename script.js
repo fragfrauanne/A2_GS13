@@ -47,18 +47,30 @@ function createCards(tasks) {
         `;
 
         // Klicken auf die Karte dreht sie um, wenn sie noch nicht umgedreht ist
+        // card.addEventListener("click", () => {
+        //     if (!card.classList.contains("flipped")) {
+        //         card.classList.add("flipped");
+        //     }
+        // });
+
+
         card.addEventListener("click", () => {
-            if (!card.classList.contains("flipped")) {
-                card.classList.add("flipped");
-            }
+            card.classList.toggle("flipped");
         });
+
 
         // Beim "Richtig"-Button entfernen wir die Karte
         card.querySelector(".correctBtn").onclick = (e) => {
-            e.stopPropagation(); // Verhindert, dass das Klicken auf den Button auch das Klicken auf die Karte auslöst
-            card.remove();
-            checkEnd();
+            e.stopPropagation(); // Prevent card flip
+            card.classList.add("fade-out"); // fades out a card when you click the "checked" sign
+
+            // Wait for the transition to finish before removing
+            setTimeout(() => {
+                card.remove();
+                checkEnd();
+            }, 600); // Match the CSS transition duration
         };
+
 
         // Beim "Falsch"-Button soll die Karte nach 1 Sekunde wieder umgedreht und neu positioniert werden
         card.querySelector(".wrongBtn").onclick = (e) => {
@@ -88,6 +100,8 @@ function repositionCard(card) {
     }
 }
 
+
+
 // Überprüft, ob alle Karten entfernt wurden und das Feuerwerk angezeigt werden soll.
 function checkEnd() {
     if (container.children.length === 0) {
@@ -97,3 +111,14 @@ function checkEnd() {
 }
 
 createCards(tasks);
+
+// layout toggling logic
+
+const toggleBtn = document.getElementById("toggleLayoutBtn");
+let isStacked = false;
+
+toggleBtn.addEventListener("click", () => {
+    isStacked = !isStacked;
+    container.classList.toggle("stack-mode", isStacked);
+    container.classList.toggle("grid-mode", !isStacked);
+});
